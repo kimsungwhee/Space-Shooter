@@ -13,13 +13,19 @@ public class Boundary
 public class PlayerController : MonoBehaviour
 {
 		protected Rigidbody m_rigidbody;
+		protected AudioSource m_audio;
 		public float m_speed;
 		public Boundary m_boundary;
 		public float m_tilt;
+		public float m_fireRate;
+		protected float m_nextFire;
+		public GameObject m_shot;
+		public Transform m_shotSpawn;
 		// Use this for initialization
 		void Start ()
 		{
-				m_rigidbody = this.rigidbody;			
+				m_rigidbody = this.rigidbody;		
+				m_audio = audio;	
 		}
 
 		void FixedUpdate ()
@@ -37,6 +43,16 @@ public class PlayerController : MonoBehaviour
 						Mathf.Clamp (m_rigidbody.position.z, m_boundary.m_zMin, m_boundary.m_zMax)
 				);
 
-				m_rigidbody.rotation = Quaternion.Euler (0.0f, 0.0f, rigidbody.velocity.x * m_tilt);
+				m_rigidbody.rotation = Quaternion.Euler (0.0f, 0.0f, m_rigidbody.velocity.x * m_tilt);
+		}
+
+		void Update ()
+		{
+				if (Time.time > m_nextFire) {
+						m_nextFire = Time.time + m_fireRate;
+						GameObject blot = Instantiate (m_shot, m_shotSpawn.position, m_shotSpawn.rotation) as GameObject;
+						DestroyObject (blot, 2.0f);
+						m_audio.Play ();
+				}
 		}
 }
