@@ -3,7 +3,7 @@ using System.Collections;
 
 public class GameController : MonoBehaviour
 {
-		public GameObject m_hazard;
+		public GameObject[] m_hazards;
 		public Vector3 m_spawnValues;
 		public int m_hazardCount;
 		public float m_hazardWait;
@@ -21,7 +21,7 @@ public class GameController : MonoBehaviour
 						for (int i = 0; i < m_hazardCount; ++i) {
 								Vector3 spawnPosition = new Vector3 (Random.Range (-m_spawnValues.x, m_spawnValues.x), m_spawnValues.y, m_spawnValues.z);
 								Quaternion spawnRotation = Quaternion.identity;
-								Instantiate (m_hazard, spawnPosition, spawnRotation);
+								Instantiate (m_hazards[Random.Range(0,m_hazards.GetLength(0))], spawnPosition, spawnRotation);
 								yield return new	WaitForSeconds (m_hazardWait);
 						}
 						yield return new WaitForSeconds (m_waveWait);
